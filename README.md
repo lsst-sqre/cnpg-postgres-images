@@ -41,7 +41,7 @@ Or with Docker you can use apt-cache to search for keywords:
 ### Building from Source
 
 If an extension (or the version of it that's needed) is not available as a Debian package
-then it can be built from source as part of the container build. Refer to the <Dockerfile>
+then it can be built from source as part of the container build. Refer to the [Dockerfile](./Dockerfile)
 for an example of how this is done for the `pg_sphere` extension. The specifics of building
 each plugin from source will vary. Refer to the plugin documentation for the required steps
 to build from source.
