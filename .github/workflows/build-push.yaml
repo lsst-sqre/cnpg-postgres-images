@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  POSTGRES_MAJOR_VERSION: 14
+  POSTGRES_MINOR_VERSION: 4
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -18,9 +21,14 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: lsstsqre/cloudnative-pg
+          flavor: |
+            latest=true
           tags: |
+            type=edge,branch=main
             type=ref,event=branch
             type=sha
+            type=raw,value=${{ env.POSTGRES_MAJOR_VERSION }}
+            type=raw,value=${{ env.POSTGRES_MAJOR_VERSION }}.${{ env.POSTGRES_MINOR_VERSION }}
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -39,3 +47,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            POSTGRES_MAJOR_VERSION=${{ env.POSTGRES_MAJOR_VERSION }}
+            POSTGRES_MINOR_VERSION=${{ env.POSTGRES_MINOR_VERSION }}
