@@ -1,0 +1,35 @@
+name: CI
+
+"on":
+  push:
+    branches-ignore:
+      # These should always correspond to pull requests, so ignore them for
+      # the push trigger and let them be triggered by the pull_request
+      # trigger, avoiding running the workflow twice.  This is a minor
+      # optimization so there's no need to ensure this is comprehensive.
+      - "dependabot/**"
+      - "renovate/**"
+      - "tickets/**"
+      - "u/**"
+    tags:
+      - "*"
+  pull_request: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    #if: >
+    #  startsWith(github.ref, 'refs/tags/')
+    #  || startsWith(github.head_ref, 'tickets/')
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: lsst-sqre/build-and-push-to-ghcr@v1
+        id: build
+        with:
+          image: ${{ github.repository }} # e.g. lsst-sqre/safirdemo
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: echo Pushed ghcr.io/${{ github.repository }}:${{ steps.build.outputs.tag }}
