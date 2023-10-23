@@ -54,7 +54,7 @@ jobs:
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ env.POSTGRES_MAJOR_VERSION }}.${{ env.POSTGRES_MINOR_VERSION }}
+            ghcr.io/lsst-sqre/cnpg-postgres-images:postgres${{ env.POSTGRES_MAJOR_VERSION }}.${{ env.POSTGRES_MINOR_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             POSTGRES_MAJOR_VERSION=${{ env.POSTGRES_MAJOR_VERSION }}
