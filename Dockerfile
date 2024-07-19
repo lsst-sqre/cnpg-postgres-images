@@ -32,8 +32,6 @@ RUN apt-get update && apt-get install -qq -y \
     # End pg_bulkload deps
     && rm -rf /var/lib/apt/lists/*
 
-
-RUN pg_config
 # Build pg_sphere from source. Needed to do this because at the time of writing
 # version 1.1 is the latest package available in the apt.postgresql.org repo, but
 # version 1.2 was needed.
