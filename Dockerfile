@@ -32,23 +32,6 @@ RUN apt-get update && apt-get install -qq -y \
     # End pg_bulkload deps
     && rm -rf /var/lib/apt/lists/*
 
-# Build pg_sphere from source. Needed to do this because at the time of writing
-# version 1.1 is the latest package available in the apt.postgresql.org repo, but
-# version 1.2 was needed.
-#RUN git clone https://github.com/postgrespro/pgsphere.git \
-#    && git checkout ${PG_SPHERE_RELEASE_TAG} \
-#    && cd pgsphere \
-#    && gmake USE_PGXS=1 \
-#    && gmake install
-
-# Build pg_bulkload from source because as of writing it does note exist in the
-# apt.postgresql.org repo    
-#WORKDIR /build
-#RUN git clone https://github.com/ossc-db/pg_bulkload --depth 1 --branch VERSION3_1_20 \
-#    && cd pg_bulkload \
-#    && make USE_PGXS=1 \
-#    && make USE_PGXS=1 install
-
 # Runtime image
 FROM ghcr.io/cloudnative-pg/postgresql:${POSTGRES_MAJOR_VERSION}.${POSTGRES_MINOR_VERSION}
 ARG POSTGRES_MAJOR_VERSION
@@ -76,20 +59,5 @@ RUN apt-get update && apt-get install -qq -y \
     postgresql-${POSTGRES_MAJOR_VERSION}-cron \
     postgresql-${POSTGRES_MAJOR_VERSION}-partman \
     && rm -rf /var/lib/apt/lists/*
-
-# Copy the pg_sphere build artifacts from the above build stage
-#COPY --from=build /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/bitcode/pg_sphere/ /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/bitcode/pg_sphere/
-#COPY --from=build /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/pg_sphere.so /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/pg_sphere.so
-#COPY --from=build /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension/pg_sphere* /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension/
-
-# Copy pg_bulkload build artifacts
-#COPY --from=build /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/bin/pg_bulkload /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/bin/pg_bulkload
-#COPY --from=build /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/pg_bulkload.so /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/pg_bulkload.so
-#COPY --from=build /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/pg_timestamp.so /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/pg_timestamp.so
-#COPY --from=build /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension/pg_bulkload* /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension/
-#COPY --from=build /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension/uninstall_pg_bulkload.sql /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension/uninstall_pg_bulkload.sql 
-#COPY --from=build /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/contrib/pg_timestamp.sql /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/contrib/pg_timestamp.sql
-#COPY --from=build /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/bitcode/pg_timestamp/ /usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/bitcode/pg_timestamp/
-# RUN cd '/usr/lib/postgresql/${POSTGRES_MAJOR_VERSION}/lib/bitcode' && /usr/lib/llvm-11/bin/llvm-lto -thinlto -thinlto-action=thinlink -o pg_timestamp.index.bc pg_timestamp/pg_timestamp.bc
 
 USER postgres
