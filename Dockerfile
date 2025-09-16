@@ -1,5 +1,5 @@
-ARG POSTGRES_MAJOR_VERSION=16
-ARG POSTGRES_MINOR_VERSION=3
+ARG POSTGRES_MAJOR_VERSION=14
+ARG POSTGRES_MINOR_VERSION=14
 ARG PG_SPHERE_RELEASE_TAG=1.5.1
 
 # Build stage. Used to build the pg_sphere extension from source.
@@ -50,7 +50,7 @@ USER root
 #
 # curl https://apt.postgresql.org/pub/repos/apt/dists/buster-pgdg/main/binary-amd64/Packages 2> /dev/null | grep Package: | grep -v Auto-Built | less
 #
-# Or with Docker you can use apt-cache to search for keywords:
+# oR WITH dOCKER YOU CAN USE APT-CACHE TO SEARCH FOR KEYWORDS:
 #
 # docker run --user 0 --rm postgres bash -c "apt-get update && apt-cache search postgresql-14"
 RUN apt-get update && apt-get install -qq -y \
