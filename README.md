@@ -18,7 +18,7 @@ Currently, the following extensions are available in the image:
 
 | Name | Version |
 |---|---|
-| pg_sphere | 1.2.0 |
+| pg_sphere | 1.5.1 |
 | pg_bulkload | 3.2.0 |
 | pg_cron | latest from `apt.postgresql.org` |
 | pg_partman | latest from `apt.postgresql.org` |
