@@ -18,7 +18,7 @@ Currently, the following extensions are available in the image:
 
 | Name | Version |
 |---|---|
-| pg_sphere | 1.2.0 |
+| pg_sphere | 1.5.1 |
 | pg_bulkload | 3.2.0 |
 | pg_cron | latest from `apt.postgresql.org` |
 | pg_partman | latest from `apt.postgresql.org` |
@@ -53,3 +53,10 @@ then it can be built from source as part of the container build. Refer to the [D
 for an example of how this is done for the `pg_sphere` extension. The specifics of building
 each extension from source will vary. Refer to the extension documentation for the required steps
 to build from source.
+### Build a new version postgres image
+Update the version in Dockerfile, run docker build command locally to test the update Dockerfile
+docker build -t cnpg-postgres-images:14.14    # build image
+docker image list                             # check locally built image
+docker run --rm -it cnpg-postgres-images:14.14 bash   # run the image locally
+git push origin tickets/DM-xx   # to push and have PR
+After create PR in github, the CI workflow will build and push automatically to https://github.com/lsst-sqre/cnpg-postgres-images
