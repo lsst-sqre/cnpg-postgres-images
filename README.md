@@ -53,3 +53,6 @@ then it can be built from source as part of the container build. Refer to the [D
 for an example of how this is done for the `pg_sphere` extension. The specifics of building
 each extension from source will vary. Refer to the extension documentation for the required steps
 to build from source.
+Update the version in Dockerfile, run docker build command:
+docker build -t cnpg-postgres-images:14.14
+docker image list

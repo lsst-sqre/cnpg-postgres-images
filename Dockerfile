@@ -60,4 +60,6 @@ RUN apt-get update && apt-get install -qq -y \
     postgresql-${POSTGRES_MAJOR_VERSION}-partman \
     && rm -rf /var/lib/apt/lists/*
 
+COPY pg_sphere--1.3.2--1.4.0.sql /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension
+
 USER postgres
