@@ -2,11 +2,6 @@ ARG POSTGRES_MAJOR_VERSION=17
 ARG POSTGRES_MINOR_VERSION=7
 ARG PG_SPHERE_RELEASE_TAG=1.5.1
 
-# Build stage. Used to build the pg_sphere extension from source.
-FROM ghcr.io/cloudnative-pg/postgresql:${POSTGRES_MAJOR_VERSION}.${POSTGRES_MINOR_VERSION} as build
-# Make the Postgres major version available to the build
-ARG POSTGRES_MAJOR_VERSION
-
 WORKDIR /build 
 
 USER root
