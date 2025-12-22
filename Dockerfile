@@ -1,5 +1,5 @@
-ARG POSTGRES_MAJOR_VERSION=14
-ARG POSTGRES_MINOR_VERSION=14
+ARG POSTGRES_MAJOR_VERSION=17
+ARG POSTGRES_MINOR_VERSION=7
 ARG PG_SPHERE_RELEASE_TAG=1.5.1
 
 # Build stage. Used to build the pg_sphere extension from source.
@@ -58,6 +58,16 @@ RUN apt-get update && apt-get install -qq -y \
     postgresql-${POSTGRES_MAJOR_VERSION}-pgsphere \
     postgresql-${POSTGRES_MAJOR_VERSION}-cron \
     postgresql-${POSTGRES_MAJOR_VERSION}-partman \
+    curl \
+    dnsutils \
+    iputils-ping \
+    netcat-openbsd \
+    iproute2 \
+    tcpdump \
+    traceroute \
+    net-tools \
+    iperf3 \
+    vim-tiny \
     && rm -rf /var/lib/apt/lists/*
 
 COPY pg_sphere--1.3.2--1.4.0.sql /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension
