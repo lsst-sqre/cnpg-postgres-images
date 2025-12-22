@@ -1,5 +1,5 @@
-ARG POSTGRES_MAJOR_VERSION=14
-ARG POSTGRES_MINOR_VERSION=14
+ARG POSTGRES_MAJOR_VERSION=17
+ARG POSTGRES_MINOR_VERSION=7
 ARG PG_SPHERE_RELEASE_TAG=1.5.1
 
 # Build stage. Used to build the pg_sphere extension from source.
@@ -32,6 +32,12 @@ RUN apt-get update && apt-get install -qq -y \
     # End pg_bulkload deps
     && rm -rf /var/lib/apt/lists/*
 
+# Build pg_bulkload from source
+RUN git clone https://github.com/ossc-db/pg_bulkload.git /tmp/pg_bulkload && \
+    cd /tmp/pg_bulkload && \
+    make USE_PGXS=1 && \
+    make USE_PGXS=1 install
+
 # Runtime image
 FROM ghcr.io/cloudnative-pg/postgresql:${POSTGRES_MAJOR_VERSION}.${POSTGRES_MINOR_VERSION}
 ARG POSTGRES_MAJOR_VERSION
@@ -50,7 +56,7 @@ USER root
 #
 # curl https://apt.postgresql.org/pub/repos/apt/dists/buster-pgdg/main/binary-amd64/Packages 2> /dev/null | grep Package: | grep -v Auto-Built | less
 #
-# oR WITH dOCKER YOU CAN USE APT-CACHE TO SEARCH FOR KEYWORDS:
+# OR WITH DOCKER YOU CAN USE APT-CACHE TO SEARCH FOR KEYWORDS:
 #
 # docker run --user 0 --rm postgres bash -c "apt-get update && apt-cache search postgresql-14"
 RUN apt-get update && apt-get install -qq -y \
@@ -58,6 +64,27 @@ RUN apt-get update && apt-get install -qq -y \
     postgresql-${POSTGRES_MAJOR_VERSION}-pgsphere \
     postgresql-${POSTGRES_MAJOR_VERSION}-cron \
     postgresql-${POSTGRES_MAJOR_VERSION}-partman \
+    # Network tools (netshoot)
+    curl \
+    wget \
+    dnsutils \
+    net-tools \
+    iputils-ping \
+    iproute2 \
+    tcpdump \
+    netcat-openbsd \
+    iftop \
+    iperf3 \
+    mtr-tiny \
+    nmap \
+    socat \
+    strace \
+    traceroute \
+    conntrack \
+    ethtool \
+    bridge-utils \
+    openssh-client \
+    vim-tiny \
     && rm -rf /var/lib/apt/lists/*
 
 COPY pg_sphere--1.3.2--1.4.0.sql /usr/share/postgresql/${POSTGRES_MAJOR_VERSION}/extension
